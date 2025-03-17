@@ -1,0 +1,32 @@
+package com.csus.csc133.student;
+
+import java.util.Random;
+
+public class StudentConfused extends Student {
+	private static final Random rand = new Random();
+
+	public StudentConfused() {
+		super();
+		this.head = rand.nextInt(360);
+
+	}
+
+	@Override
+	public void move() {
+
+		/*
+		 * add randomness to movements
+		 *
+		 * rand.nextInt(21) - 10 generates a small random change between -10 and +10
+		 * degrees to make movement unpredictable
+		 *
+		 * Makes a random 10 degree turn for each time move() is called
+		 */
+
+		this.head = (this.head + rand.nextInt(21) - 10) % 360;
+
+		super.move();
+
+	}
+
+}
