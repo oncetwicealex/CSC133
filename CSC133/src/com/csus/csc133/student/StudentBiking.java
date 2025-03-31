@@ -4,8 +4,14 @@ public class StudentBiking extends Student {
 
 	public StudentBiking() {
 		super();
-		this.speed *= 3;
-		this.sweatingRate *= 2;
+		this.setSpeed(this.getSpeed() * 3);
+		this.setSweatingRate(this.getSweatingRate() * 2);
+	}
+
+	@Override
+	public String getTypeName() {
+		// TODO Auto-generated method stub
+		return "StudentBiking";
 	}
 
 }

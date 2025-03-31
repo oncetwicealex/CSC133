@@ -1,12 +1,13 @@
 package com.csus.csc133;
 
-import java.util.Random;
+import com.codename1.charts.util.ColorUtil;
 import com.csus.csc133.student.Student;
 
 public abstract class GameObject {
 	private double x;
 	private double y;
-	private static final Random random = new Random();
+	private int color;
+	private int size;
 
 	/*
 	 * constructor: initializes an object to a random position within the game
@@ -15,6 +16,8 @@ public abstract class GameObject {
 	public GameObject() {
 		this.x = Math.max(0, Math.min(x, GameModel.getGAMEWORLD_WIDTH() - 1));
 		this.y = Math.max(0, Math.min(y, GameModel.getGAMEWORLD_HEIGHT() - 1));
+		this.color = ColorUtil.rgb(255, 0, 0);
+		this.size = 0;
 	}
 
 	public double getX() {
@@ -33,6 +36,22 @@ public abstract class GameObject {
 		y = next_Y;
 	}
 
+	public int getColor() {
+		return color;
+	}
+
+	public void setColor(int newColor) {
+		this.color = newColor;
+	}
+
+	public int getSize() {
+		return size;
+	}
+
+	public void setSize(int newSize) {
+		this.size = newSize;
+	}
+
 	public abstract void handleCollide(Student s);
 
 	@Override
@@ -40,7 +59,8 @@ public abstract class GameObject {
 		String fullname = getClass().toString();
 		fullname = fullname.substring(fullname.lastIndexOf('.') + 1);
 
-		return fullname + ", pos (" + Math.round(x) + ", " + Math.round(y) + ")";
+		return fullname + ", pos (" + Math.round(x) + ", " + Math.round(y) + "), color: "
+				+ Integer.toHexString(getColor()) + ", size: " + size;
 	}
 
 }

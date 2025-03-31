@@ -4,7 +4,7 @@ public class StudentSleeping extends Student {
 
 	public StudentSleeping() {
 		super();
-		this.sweatingRate = 0.0;
+		this.setSweatingRate(0.0);
 	}
 
 	public void move() {
@@ -14,6 +14,12 @@ public class StudentSleeping extends Student {
 	@Override
 	public String toString() {
 		return super.toString() + " zzzZZZ!";
+	}
+
+	@Override
+	public String getTypeName() {
+		// TODO Auto-generated method stub
+		return "StudentSleeping";
 	}
 
 }

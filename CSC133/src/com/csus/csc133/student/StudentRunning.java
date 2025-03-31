@@ -4,7 +4,13 @@ public class StudentRunning extends Student {
 
 	public StudentRunning() {
 		super();
-		this.sweatingRate *= 2;
+		this.setSweatingRate(this.getSweatingRate() * 2);
+	}
+
+	@Override
+	public String getTypeName() {
+		// TODO Auto-generated method stub
+		return "StudentRunning";
 	}
 
 }

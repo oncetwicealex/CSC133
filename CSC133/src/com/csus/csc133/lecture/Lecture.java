@@ -1,8 +1,6 @@
 package com.csus.csc133.lecture;
+
 import java.util.Random;
-
-
-
 
 public class Lecture {
 	private int timeRemaining;
@@ -38,6 +36,7 @@ public class Lecture {
 			}
 		}
 	}
+
 	@Override
 	public String toString() {
 		return "Lecture Time Remaining: " + (isOngoing() ? timeRemaining : "None");

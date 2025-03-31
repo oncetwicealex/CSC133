@@ -11,20 +11,26 @@ public class StudentHappy extends Student {
 
 	@Override
 	public void move() {
-		double beforeSpeed = speed;
+		double beforeSpeed = getSpeed();
 
 		if (rand.nextInt(10) < 2) {
-			speed = DEFAULT_SPEED * 10;
+			setSpeed(getDefaultSpeed() * 10);
 		}
 
 		super.move();
 
-		speed = beforeSpeed;
+		setSpeed(beforeSpeed);
 	}
 
 	@Override
 	public String toString() {
 		return super.toString() + ", I am happy!";
+	}
+
+	@Override
+	public String getTypeName() {
+		// TODO Auto-generated method stub
+		return "StudentHappy";
 	}
 
 }

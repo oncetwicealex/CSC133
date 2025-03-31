@@ -7,7 +7,7 @@ public class StudentConfused extends Student {
 
 	public StudentConfused() {
 		super();
-		this.head = rand.nextInt(360);
+		this.setHead(rand.nextInt(360));
 
 	}
 
@@ -23,10 +23,16 @@ public class StudentConfused extends Student {
 		 * Makes a random 10 degree turn for each time move() is called
 		 */
 
-		this.head = (this.head + rand.nextInt(21) - 10) % 360;
+		this.setHead((this.getHead() + rand.nextInt(21) - 10) % 360);
 
 		super.move();
 
+	}
+
+	@Override
+	public String getTypeName() {
+		// TODO Auto-generated method stub
+		return "StudentConfused";
 	}
 
 }
