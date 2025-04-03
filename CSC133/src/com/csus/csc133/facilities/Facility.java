@@ -7,4 +7,6 @@ public abstract class Facility extends GameObject {
 		super();
 	}
 
+	
+
 }

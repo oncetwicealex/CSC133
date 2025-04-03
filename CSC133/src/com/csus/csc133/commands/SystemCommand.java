@@ -20,9 +20,6 @@ public class SystemCommand extends Command {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		switch (action) {
-		case "Next Frame":
-			gm.nextFrame();
-			break;
 		case "About":
 			Dialog.show("About", "A2\nYour Name\nSemester Info", "Confirm", null);
 			break;

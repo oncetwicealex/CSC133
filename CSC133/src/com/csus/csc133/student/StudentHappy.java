@@ -2,6 +2,9 @@ package com.csus.csc133.student;
 
 import java.util.Random;
 
+import com.codename1.ui.Component;
+import com.codename1.ui.Graphics;
+
 public class StudentHappy extends Student {
 	private static final Random rand = new Random();
 
@@ -30,7 +33,12 @@ public class StudentHappy extends Student {
 	@Override
 	public String getTypeName() {
 		// TODO Auto-generated method stub
-		return "StudentHappy";
+		return "Happy";
+	}
+
+	@Override
+	public void draw(Graphics g, Component c) {
+		super.draw(g, c);		
 	}
 
 }

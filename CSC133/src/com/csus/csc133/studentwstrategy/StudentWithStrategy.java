@@ -2,6 +2,8 @@ package com.csus.csc133.studentwstrategy;
 
 import java.util.Random;
 
+import com.codename1.ui.Component;
+import com.codename1.ui.Graphics;
 import com.csus.csc133.student.Student;
 
 public class StudentWithStrategy extends Student {
@@ -51,7 +53,12 @@ public class StudentWithStrategy extends Student {
 	@Override
 	public String getTypeName() {
 		// TODO Auto-generated method stub
-		return "StudentWithStrategy";
+		return "Strategy";
+	}
+
+	@Override
+	public void draw(Graphics g, Component c) {
+		super.draw(g, c);		
 	}
 
 }

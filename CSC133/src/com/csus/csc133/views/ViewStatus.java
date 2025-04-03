@@ -31,12 +31,44 @@ public class ViewStatus extends Container implements Observer {
 		if (observable instanceof GameModel) {
 			GameModel gm = (GameModel) observable;
 			labels[0].setText("Lecture Hall: " + gm.getLectureName());
-			labels[1].setText("Lecture Time: " + gm.getLectureTimeRemaining());
-			labels[2].setText("Game Time: " + gm.getTime());
+
+			try {
+				double lectureTime = Double.parseDouble(gm.getLectureTimeRemaining());
+				double roundedTime = Math.round(lectureTime * 10.0) / 10.0;
+				labels[1].setText("Lecture Time: " + roundedTime);
+			} catch (NumberFormatException nfe) {
+				labels[1].setText("Lecture Time: " + gm.getLectureTimeRemaining());
+			}
+
+			try {
+				double roundedTime = Math.round(gm.getTime() * 10.0) / 10.0;
+				labels[2].setText("Game Time: " + roundedTime);
+			} catch (NumberFormatException nfe) {
+				labels[2].setText("Game Time: " + gm.getTime());
+			}
+
 			labels[3].setText("Absences: " + gm.getPlayer().getAbsenceTime());
-			labels[4].setText("Hydration: " + gm.getPlayer().getHydration());
-			labels[5].setText("Water Intake: " + gm.getPlayer().getWaterIntake());
-			labels[6].setText("Hold Time: " + gm.getPlayer().getTimeRemain());
+
+			try {
+				double roundedTime = Math.round(gm.getPlayer().getHydration() * 10.0) / 10.0;
+				labels[4].setText("Hydration: " + roundedTime);
+			} catch (NumberFormatException nfe) {
+				labels[4].setText("Hydration: " + gm.getPlayer().getHydration());
+			}
+
+			try {
+				double roundedTime = Math.round(gm.getPlayer().getWaterIntake() * 10.0) / 10.0;
+				labels[5].setText("Water Intake: " + roundedTime);
+			} catch (NumberFormatException nfe) {
+				labels[5].setText("Water Intake: " + gm.getPlayer().getWaterIntake());
+			}
+
+			try {
+				double roundedTime = Math.round(gm.getPlayer().getTimeRemain() * 10.0) / 10.0;
+				labels[6].setText("Hold Time: " + roundedTime);
+			} catch (NumberFormatException nfe) {
+				labels[6].setText("Hold Time: " + gm.getPlayer().getTimeRemain());
+			}
 
 		}
 		revalidate();

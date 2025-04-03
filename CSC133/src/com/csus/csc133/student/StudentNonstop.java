@@ -1,5 +1,8 @@
 package com.csus.csc133.student;
 
+import com.codename1.ui.Component;
+import com.codename1.ui.Graphics;
+
 public class StudentNonstop extends Student {
 
 	@Override
@@ -11,7 +14,12 @@ public class StudentNonstop extends Student {
 	@Override
 	public String getTypeName() {
 		// TODO Auto-generated method stub
-		return "StudentNonstop";
+		return "Nonstop";
+	}
+
+	@Override
+	public void draw(Graphics g, Component c) {
+		super.draw(g, c);		
 	}
 
 }

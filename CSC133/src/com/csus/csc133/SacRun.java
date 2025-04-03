@@ -5,6 +5,7 @@ import java.util.Random;
 import com.codename1.ui.layouts.BorderLayout;
 import com.codename1.ui.layouts.BoxLayout;
 import com.codename1.ui.plaf.Border;
+import com.codename1.ui.util.UITimer;
 import com.codename1.charts.util.ColorUtil;
 import com.codename1.ui.*;
 import com.codename1.ui.events.ActionEvent;
@@ -28,6 +29,16 @@ public class SacRun extends Form {
 		gm = new GameModel();
 		StudentPlayer.getStudentPlayer().setGameModel(gm);
 		A2();
+		
+		UITimer timer = new UITimer(new Runnable() {
+			public void run() {
+				gm.nextFrame();
+			}
+		});
+		
+		timer.schedule(20, true, this);
+		
+		
 	}
 
 	// UI provided for A1 only, remove it in A2
@@ -52,7 +63,7 @@ public class SacRun extends Form {
 		setLayout(new BorderLayout());
 
 		// Create the main views
-		ViewMap viewMap = new ViewMap();
+		final ViewMap viewMap = new ViewMap();
 		gm.addObserver(viewMap);
 		ViewMessage viewMessage = new ViewMessage();
 		gm.addObserver(viewMessage);
@@ -78,18 +89,8 @@ public class SacRun extends Form {
 		addWestButtons(west);
 
 		setupToolbar();
-
+		
 		show();
-
-		Display.getInstance().callSerially(() -> {
-			int width = viewMap.getWidth();
-			int height = viewMap.getHeight();
-			// Update game world dimensions based on the actual ViewMap size
-			GameModel.setGAMEWORLD_WIDTH(width);
-			GameModel.setGAMEWORLD_HEIGHT(height);
-			System.out.println("Game world dimensions set to width: " + width + " and height: " + height);
-		});
-
 	}
 
 	private Command getCommandFor(String name) {
@@ -107,16 +108,16 @@ public class SacRun extends Form {
 				changeStrategyCommand = new com.csus.csc133.commands.ChangeStrategyCommand(gm);
 			}
 			return changeStrategyCommand;
-		case "Lecture Hall":
-			return new com.csus.csc133.commands.CollisionCommand(gm, "Lecture Hall");
-		case "Water Dispenser":
-			return new com.csus.csc133.commands.CollisionCommand(gm, "Water Dispenser");
-		case "Restroom":
-			return new com.csus.csc133.commands.CollisionCommand(gm, "Restroom");
-		case "Student":
-			return new com.csus.csc133.commands.StudentButtonCommand(gm, "Student");
-		case "Next Frame":
-			return new com.csus.csc133.commands.SystemCommand(gm, "Next Frame");
+//		case "Lecture Hall":
+//			return new com.csus.csc133.commands.CollisionCommand(gm, "Lecture Hall");
+//		case "Water Dispenser":
+//			return new com.csus.csc133.commands.CollisionCommand(gm, "Water Dispenser");
+//		case "Restroom":
+//			return new com.csus.csc133.commands.CollisionCommand(gm, "Restroom");
+//		case "Student":
+//			return new com.csus.csc133.commands.StudentButtonCommand(gm, "Student");
+//		case "Next Frame":
+//			return new com.csus.csc133.commands.SystemCommand(gm, "Next Frame");
 		default:
 			return null;
 		}
@@ -158,8 +159,10 @@ public class SacRun extends Form {
 	}
 
 	private void addWestButtons(Container container) {
-		String[] buttonNames = { "Move", "Stop", "Turn Left", "Turn Right", "Change Strategies", "Lecture Hall",
-				"Water Dispenser", "Restroom", "Student", "Next Frame" };
+//		String[] buttonNames = { "Move", "Stop", "Turn Left", "Turn Right", "Change Strategies", "Lecture Hall",
+//				"Water Dispenser", "Restroom", "Student", "Next Frame" };
+		
+		String[] buttonNames = { "Move", "Stop", "Turn Left", "Turn Right", "Change Strategies" };
 
 		ArrayList<Button> buttons = new ArrayList<>();
 

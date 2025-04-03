@@ -2,6 +2,9 @@ package com.csus.csc133.facilities;
 
 import java.util.Random;
 
+import com.codename1.charts.util.ColorUtil;
+import com.codename1.ui.Component;
+import com.codename1.ui.Graphics;
 import com.csus.csc133.lecture.Lecture;
 import com.csus.csc133.student.Student;
 import com.csus.csc133.student.StudentPlayer;
@@ -71,6 +74,25 @@ public class LectureHall extends Facility {
 				: "null";
 
 		return super.toString() + " Lecture Hall Name: " + name + ", Current Lecture Remaining Time: " + lectureTime;
+	}
+
+	@Override
+	public void draw(Graphics g, Component c) {
+		int size = getSize();
+		int halfSize = size / 2; 
+		
+		//convert center (x,y) to top left coordinates 
+		int xPos = (int)((int) getX() + c.getX() - halfSize);
+		int yPos = (int)((int) getY() + c.getY() - halfSize);
+		
+		g.setColor(ColorUtil.rgb(50, 66, 168));
+		g.fillRect(xPos, yPos, size, size);
+		
+		g.setColor(ColorUtil.BLACK);
+		g.drawString(name, xPos, yPos + size);
+		
+		
+		
 	}
 
 }

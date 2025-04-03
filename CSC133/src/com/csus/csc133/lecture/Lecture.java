@@ -2,8 +2,10 @@ package com.csus.csc133.lecture;
 
 import java.util.Random;
 
+import com.csus.csc133.GameModel;
+
 public class Lecture {
-	private int timeRemaining;
+	private double timeRemaining;
 	private static final Random rand = new Random();
 
 	public Lecture() {
@@ -14,12 +16,12 @@ public class Lecture {
 		return timeRemaining > 0;
 	}
 
-	public int getTimeRemaining() {
+	public double getTimeRemaining() {
 		return timeRemaining;
 	}
 
 	public void startLecture() {
-		this.timeRemaining = 10 + rand.nextInt(11);
+		this.timeRemaining = 20 + rand.nextInt(11);
 		System.out.println("Lecture has started. Time remaining: " + timeRemaining);
 	}
 
@@ -30,8 +32,9 @@ public class Lecture {
 
 	public void decreaseTime() {
 		if (timeRemaining > 0) {
-			timeRemaining--;
-			if (timeRemaining == 0) {
+			timeRemaining -= GameModel.getFrameElapsedTime();
+			if (timeRemaining <= 0) {
+				timeRemaining = 0;
 				System.out.println("Lecture is over.");
 			}
 		}

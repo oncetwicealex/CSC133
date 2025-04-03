@@ -1,5 +1,9 @@
 package com.csus.csc133.student;
 
+import com.codename1.charts.util.ColorUtil;
+import com.codename1.ui.Component;
+import com.codename1.ui.Graphics;
+
 public class StudentAngry extends Student {
 
 	public StudentAngry() {
@@ -14,7 +18,13 @@ public class StudentAngry extends Student {
 
 	@Override
 	public String getTypeName() {
-		return "StudentAngry";
+		return "Angry";
+	}
+
+	@Override
+	public void draw(Graphics g, Component c) {
+		super.draw(g, c);
+		
 	}
 
 }

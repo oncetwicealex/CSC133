@@ -2,6 +2,9 @@ package com.csus.csc133.student;
 
 import java.util.Random;
 
+import com.codename1.ui.Component;
+import com.codename1.ui.Graphics;
+
 public class StudentCar extends Student {
 
 	public StudentCar() {
@@ -17,7 +20,12 @@ public class StudentCar extends Student {
 	@Override
 	public String getTypeName() {
 		// TODO Auto-generated method stub
-		return "StudentCar";
+		return "Car";
+	}
+
+	@Override
+	public void draw(Graphics g, Component c) {
+		super.draw(g, c);		
 	}
 
 }

@@ -1,5 +1,8 @@
 package com.csus.csc133.student;
 
+import com.codename1.charts.util.ColorUtil;
+import com.codename1.ui.Component;
+import com.codename1.ui.Graphics;
 import com.csus.csc133.GameModel;
 
 public class StudentPlayer extends Student {
@@ -83,13 +86,41 @@ public class StudentPlayer extends Student {
 		setAbsenceTime(getAbsenceTime() + 1);
 	}
 
-	public int getTimeRemain() {
+	public double getTimeRemain() {
 		return super.getTimeRemain();
 	}
 
 	@Override
 	public String getTypeName() {
 		// TODO Auto-generated method stub
-		return null;
+		return "Player 1";
+	}
+
+	@Override
+	public void draw(Graphics g, Component c) {
+		int size = getSize();
+		int halfSize = size / 2;
+		int xCenter = (int) getX() + c.getX();
+		int yCenter = (int) getY() + c.getY();
+		
+		String label = getTypeName();
+		if (label == null) {
+			label = "";
+		}
+		int labelwidth = g.getFont().stringWidth(label);
+		int textX = xCenter - (labelwidth / 2);
+		int textY = yCenter + halfSize + 5;
+		
+
+		int[] xPoints = { xCenter, xCenter - halfSize, xCenter + halfSize };
+		int[] yPoints = { yCenter - halfSize, yCenter + halfSize, yCenter + halfSize };
+		
+		g.setColor(getColor());
+		g.fillPolygon(xPoints, yPoints, 3);
+		
+		g.setColor(ColorUtil.BLACK);
+		g.drawString(label, textX, textY);
+		
+		
 	}
 }

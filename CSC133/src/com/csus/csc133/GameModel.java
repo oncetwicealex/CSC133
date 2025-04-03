@@ -14,16 +14,20 @@ public class GameModel extends Observable {
 	private GameObjectCollection objects;
 	private StudentPlayer player1;
 	private Lecture currentlecture;
-	private static int time;
+	private double time;
 	private static final Random rand = new Random();
+	private static final double FRAME_ELAPSED_TIME = 0.02;
 
 	private static int GAMEWORLD_WIDTH = 1024;
 	private static int GAMEWORLD_HEIGHT = 768;
 
 	public GameModel() {
 		objects = new GameObjectCollection();
-		time = 0;
+		time = 0.0;
 		init();
+
+		setChanged();
+		notifyObservers("Initial Update");
 
 	}
 
@@ -33,16 +37,37 @@ public class GameModel extends Observable {
 		System.out.println("Time: " + time);
 
 		/* initialize facilities */
+		
+		final int MAX_ATTEMPTS = 100;
+	
+		ArrayList<GameObject> placedFacilities = new ArrayList<>();
+		
 		LectureHall lecturehall = new LectureHall("Riverside Hall");
-
-		objects.add(lecturehall);
-
-		for (int i = 0; i < 2 + rand.nextInt(3); i++) {
-			objects.add(new Restroom());
+		if(placeFacilityOC(lecturehall, placedFacilities, rand, MAX_ATTEMPTS)) {
+			placedFacilities.add(lecturehall);
+			objects.add(lecturehall);
+		}else {
+			System.out.println("Could not place lecture hall without overlap.");
 		}
 
 		for (int i = 0; i < 2 + rand.nextInt(3); i++) {
-			objects.add(new WaterDispenser());
+			Restroom restroom = new Restroom();
+			if(placeFacilityOC(restroom, placedFacilities, rand, MAX_ATTEMPTS)) {
+				placedFacilities.add(restroom);
+				objects.add(restroom);
+			}else {
+				System.out.println("Could not place restroom without overlap.");
+			}
+		}
+
+		for (int i = 0; i < 2 + rand.nextInt(3); i++) {
+			WaterDispenser wd = new WaterDispenser();
+			if(placeFacilityOC(wd, placedFacilities, rand, MAX_ATTEMPTS)) {
+				placedFacilities.add(wd);
+				objects.add(wd);
+			}else {
+				System.out.println("Could not place waterdispenser without overlap.");
+			}
 		}
 
 		/* initialize students */
@@ -103,8 +128,15 @@ public class GameModel extends Observable {
 		GameObjectCollection.CustomIterator it2 = objects.getCustomIterator();
 		while (it2.hasNext()) {
 			GameObject o = it2.getNext();
-			o.setX(random.nextInt(getGAMEWORLD_WIDTH()));
-			o.setY(random.nextInt(GAMEWORLD_HEIGHT));
+			
+			if(!(o instanceof Facility)) {
+			int halfSize = o.getSize() / 2;
+
+			int x = halfSize + random.nextInt(getGAMEWORLD_WIDTH() - o.getSize());
+			int y = halfSize + random.nextInt(getGAMEWORLD_HEIGHT() - o.getSize());
+			o.setX(x);
+			o.setY(y);
+			}
 		}
 
 	}
@@ -136,10 +168,7 @@ public class GameModel extends Observable {
 	 */
 
 	public void nextFrame() {
-		time++;
-
-		System.out.println("Advanced to next frame.");
-		System.out.println("Current game time: " + time);
+		time += getFrameElapsedTime();
 
 		// start lecture
 		if (currentlecture == null || !currentlecture.isOngoing() && rand.nextInt(10) == 0) {
@@ -275,7 +304,8 @@ public class GameModel extends Observable {
 		return player1;
 	}
 
-	public int getTime() {
+	public double getTime() {
+
 		return time;
 	}
 
@@ -348,6 +378,39 @@ public class GameModel extends Observable {
 
 	public CustomIterator getObjectsIterator() {
 		return objects.getCustomIterator();
+	}
+
+	public static double getFrameElapsedTime() {
+		return FRAME_ELAPSED_TIME;
+	}
+
+	public boolean placeFacilityOC(GameObject facility, ArrayList<GameObject> placedFacilities,
+			Random random, int maxAttempts) {
+		int attempts = 0;
+		int halfSize = facility.getSize() / 2;
+
+		while (attempts < maxAttempts) {
+			int x = halfSize + random.nextInt(getGAMEWORLD_WIDTH() - facility.getSize());
+			int y = halfSize + random.nextInt(getGAMEWORLD_HEIGHT() - facility.getSize());
+
+			facility.setX(x);
+			facility.setY(y);
+
+			boolean overlap = false;
+
+			for (GameObject placed : placedFacilities) {
+				if (facility.overlaps(placed)) {
+					overlap = true;
+					break;
+				}
+			}
+			if (!overlap) {
+				return true;	
+			}
+			attempts++;
+		}
+		return false;
+
 	}
 
 }
