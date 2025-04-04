@@ -16,6 +16,7 @@ public class GameModel extends Observable {
 	private Lecture currentlecture;
 	private LectureHall currentLectureHall;
 	private double time;
+	private boolean paused = false;
 	private static final Random rand = new Random();
 	private static final double FRAME_ELAPSED_TIME = 0.02;
 
@@ -190,6 +191,12 @@ public class GameModel extends Observable {
 	 */
 
 	public void nextFrame() {
+		
+		if (isPaused()) {
+			setChanged();
+			notifyObservers("Game is paused.");
+			return;
+		}
 		time += getFrameElapsedTime();
 
 		// start lecture
@@ -504,6 +511,15 @@ public class GameModel extends Observable {
 		}
 		return false;
 
+	}
+	
+	public boolean isPaused() {
+		return paused;
+	}
+
+	public void setPaused(boolean b) {
+		paused = b;
+		
 	}
 
 }

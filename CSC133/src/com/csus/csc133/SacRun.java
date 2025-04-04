@@ -1,26 +1,28 @@
 package com.csus.csc133;
 
 import java.util.ArrayList;
-import java.util.Random;
 import com.codename1.ui.layouts.BorderLayout;
 import com.codename1.ui.layouts.BoxLayout;
-import com.codename1.ui.plaf.Border;
 import com.codename1.ui.util.UITimer;
-import com.codename1.charts.util.ColorUtil;
 import com.codename1.ui.*;
-import com.codename1.ui.events.ActionEvent;
 import com.codename1.ui.geom.Dimension;
 import com.csus.csc133.commands.ChangeStrategyCommand;
-import com.csus.csc133.commands.CollisionCommand;
+import com.csus.csc133.commands.MovementCommand;
+import com.csus.csc133.commands.PauseCommand;
 import com.csus.csc133.commands.SystemCommand;
-import com.csus.csc133.facilities.*;
-import com.csus.csc133.student.Student;
 import com.csus.csc133.student.StudentPlayer;
 import com.csus.csc133.views.ViewMap;
 import com.csus.csc133.views.ViewMessage;
 import com.csus.csc133.views.ViewStatus;
 
 public class SacRun extends Form {
+
+	private boolean leftPressed = false;
+	private boolean rightPressed = false;
+	private boolean upPressed = false;
+	private boolean downPressed = false;
+	
+	private boolean paused = false;
 
 	private GameModel gm;
 	private ChangeStrategyCommand changeStrategyCommand;
@@ -29,16 +31,32 @@ public class SacRun extends Form {
 		gm = new GameModel();
 		StudentPlayer.getStudentPlayer().setGameModel(gm);
 		A2();
-		
+
 		UITimer timer = new UITimer(new Runnable() {
 			public void run() {
+				if (leftPressed) {
+		            Command c = getCommandFor("Turn Left");
+		            if (c != null) c.actionPerformed(null);
+		        }
+		        if (rightPressed) {
+		            Command c = getCommandFor("Turn Right");
+		            if (c != null) c.actionPerformed(null);
+		        }
+		        if (upPressed) {
+		            Command c = getCommandFor("Move");
+		            if (c != null) c.actionPerformed(null);
+		        }
+		        if (downPressed) {
+		            Command c = getCommandFor("Stop");
+		            if (c != null) c.actionPerformed(null);
+		        }
+		        
 				gm.nextFrame();
 			}
 		});
-		
+
 		timer.schedule(20, true, this);
-		
-		
+
 	}
 
 	// UI provided for A1 only, remove it in A2
@@ -89,25 +107,30 @@ public class SacRun extends Form {
 		addWestButtons(west);
 
 		setupToolbar();
-		
+
 		show();
 	}
 
 	private Command getCommandFor(String name) {
 		switch (name) {
 		case "Move":
-			return new com.csus.csc133.commands.MovementCommand(gm, "Move");
+			return new MovementCommand(gm, "Move");
 		case "Stop":
-			return new com.csus.csc133.commands.MovementCommand(gm, "Stop");
+			return new MovementCommand(gm, "Stop");
 		case "Turn Left":
-			return new com.csus.csc133.commands.MovementCommand(gm, "Turn Left");
+			return new MovementCommand(gm, "Turn Left");
 		case "Turn Right":
-			return new com.csus.csc133.commands.MovementCommand(gm, "Turn Right");
+			return new MovementCommand(gm, "Turn Right");
 		case "Change Strategies":
 			if (changeStrategyCommand == null) {
 				changeStrategyCommand = new com.csus.csc133.commands.ChangeStrategyCommand(gm);
 			}
 			return changeStrategyCommand;
+		case "Pause":
+			return new PauseCommand(gm, "Pause");
+		case "Play":
+			return new PauseCommand(gm, "Play");
+			
 //		case "Lecture Hall":
 //			return new com.csus.csc133.commands.CollisionCommand(gm, "Lecture Hall");
 //		case "Water Dispenser":
@@ -161,8 +184,8 @@ public class SacRun extends Form {
 	private void addWestButtons(Container container) {
 //		String[] buttonNames = { "Move", "Stop", "Turn Left", "Turn Right", "Change Strategies", "Lecture Hall",
 //				"Water Dispenser", "Restroom", "Student", "Next Frame" };
-		
-		String[] buttonNames = { "Move", "Stop", "Turn Left", "Turn Right", "Change Strategies" };
+
+		String[] buttonNames = { "Move", "Stop", "Turn Left", "Turn Right", "Change Strategies", "Pause" };
 
 		ArrayList<Button> buttons = new ArrayList<>();
 
@@ -182,6 +205,44 @@ public class SacRun extends Form {
 		}
 	}
 
+	@Override
+	public void keyPressed(int k) {
+		super.keyPressed(k);
+
+		char c = (char) k;
+
+		if (c == 'a') {
+			leftPressed = true;
+		} else if (c == 'd') {
+			rightPressed = true;
+		} else if (c == 'w') {
+			upPressed = true;
+		} else if (c == 's') {
+			downPressed = true;
+		}
+
+	}
+
+	@Override
+	public void keyReleased(int k) {
+		super.keyReleased(k);
+
+		char c = (char) k;
+
+		if (c == 'a') {
+			leftPressed = false;
+		} else if (c == 'd') {
+			rightPressed = false;
+		} else if (c == 'w') {
+			upPressed = false;
+		} else if (c == 's') {
+			downPressed = false;
+		}
+
+	}
+
+	
+
 	private void setupToolbar() {
 
 		Toolbar tb = getToolbar();
@@ -191,13 +252,11 @@ public class SacRun extends Form {
 		}
 		SystemCommand aboutCommand = new SystemCommand(gm, "About");
 		SystemCommand exitCommand = new SystemCommand(gm, "Exit");
-		CollisionCommand lectureHallCommand = new CollisionCommand(gm, "Lecture Hall");
 
 		tb.addCommandToSideMenu(changeStrategyCommand);
 		tb.addCommandToSideMenu(aboutCommand);
 		tb.addCommandToSideMenu(exitCommand);
 
-		tb.addCommandToRightBar("Lecture Hall", null, lectureHallCommand);
 		tb.addCommandToRightBar("About", null, aboutCommand);
 	}
 
