@@ -22,10 +22,10 @@ public class ViewMessage extends Container implements Observer {
 
 	@Override
 	public void update(Observable observable, Object data) {
-		if (data != null && data instanceof String) {
+		if (data != null && data instanceof String && !((String) data).isEmpty()) {
 			message.setText((String) data);
 		} else {
-			message.setText("");
+
 		}
 
 		revalidate();

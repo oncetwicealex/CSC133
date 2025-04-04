@@ -40,6 +40,12 @@ public class Restroom extends Facility {
 		g.setColor(ColorUtil.BLACK);
 		g.drawString("Restroom", xPos, yPos + size);
 		
+		if(isSelected()) {
+			g.setColor(ColorUtil.rgb(255,0,0));
+			g.drawRect(xPos, yPos, size, size);
+			
+		}
+		
 	}
 
 	public String getName() {

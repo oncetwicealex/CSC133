@@ -32,13 +32,19 @@ public class WaterDispenser extends Facility {
 		int size = getSize();
 		int xPos = (int) (getX() + c.getX() - size / 2);
 		int yPos = (int) (getY() + c.getY() - size / 2);
-		
+
 		g.setColor(ColorUtil.rgb(50, 66, 168));
 		g.fillArc(xPos, yPos, size, size, 0, 360);
 
 		g.setColor(ColorUtil.BLACK);
 		g.drawString("Water", xPos, yPos + size);
-		
+
+		if (isSelected()) {
+			g.setColor(ColorUtil.rgb(255, 0, 0));
+			g.drawRect(xPos, yPos, size, size);
+
+		}
+
 	}
 
 	public String getName() {

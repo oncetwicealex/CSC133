@@ -10,6 +10,7 @@ public abstract class GameObject {
 	private double y;
 	private int color;
 	private int size;
+	private boolean selected = false;
 
 	/*
 	 * constructor: initializes an object to a random position within the game
@@ -57,19 +58,19 @@ public abstract class GameObject {
 	}
 
 	public void clampPosition() {
-		int halfSize = getSize() / 2;
+		
 
-		if (x < halfSize) {
-			x = halfSize;
-		} else if (x > GameModel.getGAMEWORLD_WIDTH() - halfSize) {
-			x = GameModel.getGAMEWORLD_WIDTH() - halfSize;
+		if (x < getSize() / 2) {
+			x = getSize() / 2;
+		} else if (x > GameModel.getGAMEWORLD_WIDTH() - getSize() / 2) {
+			x = GameModel.getGAMEWORLD_WIDTH() - getSize() / 2;
 
 		}
 
-		if (y < halfSize) {
-			y = halfSize;
-		} else if (y > GameModel.getGAMEWORLD_HEIGHT() - halfSize) {
-			y = GameModel.getGAMEWORLD_HEIGHT() - halfSize;
+		if (y < getSize() / 2) {
+			y = getSize() / 2;
+		} else if (y > GameModel.getGAMEWORLD_HEIGHT() - getSize() / 2) {
+			y = GameModel.getGAMEWORLD_HEIGHT() - getSize() / 2;
 		}
 
 	}
@@ -94,6 +95,15 @@ public abstract class GameObject {
 
 	}
 
+	public boolean contains(int x, int y) {
+		int left = (int) (getX() - getSize() / 2);
+		int right = (int) (getX() + getSize() / 2);
+		int top = (int) (getY() - getSize() / 2);
+		int bottom = (int) (getY() + getSize() / 2);
+		return (x >= left && x <= right && y >= top && y <= bottom);
+
+	}
+
 	public boolean collidesWith(GameObject o) {
 		int[] box1 = this.getBoundingBox(); // box1 = {left1, top1, right1, bottom1 }
 		int[] box2 = o.getBoundingBox(); // box 2 = {left2, top2, right2, bottom2 }
@@ -111,6 +121,14 @@ public abstract class GameObject {
 		// if no separation, the boxes overlap
 		return true;
 
+	}
+
+	public boolean isSelected() {
+		return selected;
+	}
+
+	public void setSelected(boolean s) {
+		selected = s;
 	}
 
 	public abstract void handleCollide(Student s);

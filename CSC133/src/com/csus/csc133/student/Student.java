@@ -11,8 +11,8 @@ import com.csus.csc133.GameObject;
 import com.csus.csc133.IMoveable;
 
 public abstract class Student extends GameObject implements IMoveable {
-	private static final double DEFAULT_SPEED = 3.5;
-	private static final double DEFAULT_TALKATIVELEVEL = 10.0;
+	private static final double DEFAULT_SPEED = 5;
+	private static final double DEFAULT_TALKATIVELEVEL = 4.0;
 	private static final double DEFAULT_HYDRATION = 150.0;
 	private static final double DEFAULT_WATERINTAKE = 0;
 	private static final double DEFAULT_SWEATINGRATE = 3.0;
@@ -28,6 +28,7 @@ public abstract class Student extends GameObject implements IMoveable {
 	private int absenceTime;
 	
 	private Vector<Student> currentCollisions = new Vector<>();
+	private GameModel gm;
 
 	public abstract String getTypeName();
 
@@ -45,6 +46,9 @@ public abstract class Student extends GameObject implements IMoveable {
 		int studentSize = 40 + random.nextInt(21);
 		this.setSize(studentSize);
 
+	}
+	public void setGameModel(GameModel gm) {
+		this.gm = gm;
 	}
 
 	@Override
@@ -70,6 +74,12 @@ public abstract class Student extends GameObject implements IMoveable {
 
 		g.setColor(ColorUtil.BLACK);
 		g.drawString(label, textX, textY);
+		
+		if (isSelected()) {
+			g.setColor(ColorUtil.rgb(255, 0, 0));
+			g.drawRect(xCenter-halfSize, yCenter-halfSize, size, size);
+			
+		}
 
 	}
 
@@ -90,6 +100,7 @@ public abstract class Student extends GameObject implements IMoveable {
 			return;
 
 		}
+		setHydration(getHydration() - getSweatingRate() * elapsed);
 
 		// convert degrees to radians
 		double radians = Math.toRadians(90.0 - head);
@@ -155,6 +166,7 @@ public abstract class Student extends GameObject implements IMoveable {
 		
 		this.setTimeRemain(talkTime);
 		s.setTimeRemain(talkTime);
+		
 		}
 		
 	

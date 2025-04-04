@@ -93,6 +93,13 @@ public class StudentPlayer extends Student {
 		// TODO Auto-generated method stub
 		return "Player 1";
 	}
+	
+	public void handleCollide(Student s) {
+		super.handleCollide(s);
+		if (gm!=null) {
+			gm.updateMessage("Player collided with " + s.getTypeName());
+		}
+	}
 
 	@Override
 	public void draw(Graphics g, Component c) {
@@ -118,6 +125,12 @@ public class StudentPlayer extends Student {
 		
 		g.setColor(ColorUtil.BLACK);
 		g.drawString(label, textX, textY);
+		
+		if (isSelected()) {
+			g.setColor(ColorUtil.rgb(255, 0, 0));
+			g.drawRect(xCenter-halfSize, yCenter-halfSize, size, size);
+			
+		}
 		
 		
 	}

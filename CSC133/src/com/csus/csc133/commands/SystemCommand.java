@@ -21,7 +21,7 @@ public class SystemCommand extends Command {
 	public void actionPerformed(ActionEvent e) {
 		switch (action) {
 		case "About":
-			Dialog.show("About", "A2\nYour Name\nSemester Info", "Confirm", null);
+			Dialog.show("About", "A3 Alexandra Allwein CSC133 FALL 2025", "Confirm", null);
 			break;
 		case "Exit":
 			if (Dialog.show("Confirm Exit", "Are you sure you want to exit?", "Yes", "No")) {

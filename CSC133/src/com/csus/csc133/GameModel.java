@@ -17,6 +17,7 @@ public class GameModel extends Observable {
 	private LectureHall currentLectureHall;
 	private double time;
 	private boolean paused = false;
+	private boolean positionMode = false;
 	private static final Random rand = new Random();
 	private static final double FRAME_ELAPSED_TIME = 0.02;
 
@@ -65,7 +66,7 @@ public class GameModel extends Observable {
 		ArrayList<GameObject> placedFacilities = new ArrayList<>();
 
 		for (int i = 0; i < threeHalls.length; i++) {
-			LectureHall lecturehall = new LectureHall(threeHalls[i]);
+			LectureHall lecturehall = new LectureHall(threeHalls[i], this);
 			if (placeFacilityOC(lecturehall, placedFacilities, rand, MAX_ATTEMPTS)) {
 				placedFacilities.add(lecturehall);
 				objects.add(lecturehall);
@@ -191,7 +192,7 @@ public class GameModel extends Observable {
 	 */
 
 	public void nextFrame() {
-		
+
 		if (isPaused()) {
 			setChanged();
 			notifyObservers("Game is paused.");
@@ -265,7 +266,7 @@ public class GameModel extends Observable {
 			Student s1 = studentList.get(i);
 			for (int j = i + 1; j < studentList.size(); j++) {
 				Student s2 = studentList.get(j);
-				if(s1.collidesWith(s2)) {
+				if (s1.collidesWith(s2)) {
 					s1.handleCollide(s2);
 				} else {
 					s1.getCurrentCollisions().remove(s2);
@@ -297,7 +298,7 @@ public class GameModel extends Observable {
 		checkGameOver();
 
 		setChanged();
-		notifyObservers("Advanced to next frame");
+		notifyObservers(null);
 
 	}
 
@@ -315,84 +316,6 @@ public class GameModel extends Observable {
 
 	public void setCurrentLectureHall(LectureHall currentLectureHall) {
 		this.currentLectureHall = currentLectureHall;
-	}
-
-	public void studentcollidelecturehall() {
-
-		GameObjectCollection.CustomIterator it5 = objects.getCustomIterator();
-		while (it5.hasNext()) {
-			GameObject o = it5.getNext();
-			if (o instanceof LectureHall) {
-				((LectureHall) o).handleCollide(player1);
-				System.out.println("Player collided with lecture hall.");
-				break;
-			}
-
-		}
-		setChanged();
-		notifyObservers("Player collided with Lecture Hall");
-	}
-
-	public void studentcolliderestroom() {
-
-		GameObjectCollection.CustomIterator it6 = objects.getCustomIterator();
-		while (it6.hasNext()) {
-			GameObject o = it6.getNext();
-			if (o instanceof Restroom) {
-				((Restroom) o).handleCollide(player1);
-				System.out.println("Player collided with restroom.");
-				break;
-			}
-		}
-		setChanged();
-		notifyObservers("Player collided with Restroom.");
-
-	}
-
-	public void studentcollidewater() {
-
-		GameObjectCollection.CustomIterator it7 = objects.getCustomIterator();
-		while (it7.hasNext()) {
-			GameObject o = it7.getNext();
-			if (o instanceof WaterDispenser) {
-				((WaterDispenser) o).handleCollide(player1);
-				System.out.println("Player collided with Water Dispenser.");
-				break;
-			}
-		}
-
-		setChanged();
-		notifyObservers("Player collided with Water Dispenser.");
-	}
-
-	public void studentcollidestudent() {
-		ArrayList<Student> NPC = new ArrayList<>();
-
-		GameObjectCollection.CustomIterator it8 = objects.getCustomIterator();
-		while (it8.hasNext()) {
-			GameObject o = it8.getNext();
-			if (o instanceof Student && !(o instanceof StudentPlayer)) {
-				NPC.add((Student) o);
-			}
-		}
-
-		if (!NPC.isEmpty()) {
-
-			Student randStudent = NPC.get(rand.nextInt(NPC.size()));
-
-			player1.handleCollide(randStudent);
-			randStudent.handleCollide(player1);
-
-			String studentClassName = randStudent.getClass().toString();
-			String className = studentClassName.substring(studentClassName.lastIndexOf('.') + 1);
-
-			System.out.println("Player collided with: " + className);
-
-			setChanged();
-			notifyObservers("Player collided with: " + className);
-
-		}
-
 	}
 
 	public StudentPlayer getPlayer() {
@@ -447,7 +370,8 @@ public class GameModel extends Observable {
 			if (player1.getWaterIntake() >= 500) {
 				message += "Excessive water intake";
 			}
-			message += "\nTime: " + time;
+			double roundedTime = Math.round(time * 100.0)/100.0;
+			message += "\nTime: " + roundedTime;
 
 			Dialog.show("Game Over", message, "Confirm", null);
 			Display.getInstance().exitApplication();
@@ -512,14 +436,23 @@ public class GameModel extends Observable {
 		return false;
 
 	}
-	
+
 	public boolean isPaused() {
 		return paused;
 	}
 
 	public void setPaused(boolean b) {
 		paused = b;
-		
+
+	}
+
+	public boolean isPositionMode() {
+		return positionMode;
+	}
+
+	public void setPositionMode(boolean b) {
+		positionMode = b;
+
 	}
 
 }

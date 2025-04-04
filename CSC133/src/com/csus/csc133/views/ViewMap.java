@@ -55,5 +55,82 @@ public class ViewMap extends Container implements Observer {
 			}
 		}
 	}
+	
+	@Override
+	public void pointerPressed(int x, int y) {
+		x = x - getAbsoluteX();
+		y = y - getAbsoluteY();
+		
+		if(gm.isPaused() && gm.isPositionMode()) {
+			moveSelectedObject(x,y);
+			return;
+		}
+		
+		GameObject clickedObject = null;
+		
+		CustomIterator it = gm.getObjectsIterator();
+		while(it.hasNext()) {
+			GameObject o = it.getNext();
+			if (o.contains(x, y)) {
+				clickedObject = o;
+				break;
+			}
+		}
+		
+		if (clickedObject != null ) {
+			selectOnly(clickedObject);
+			
+		} else {
+			unselectAll();
+		}
+		
+		repaint();
+		revalidate();
+	}
+
+
+	private void moveSelectedObject(int x, int y) {
+		GameObject selected = null;
+		CustomIterator it = gm.getObjectsIterator();
+		while(it.hasNext()) {
+			GameObject o = it.getNext();
+			if(o.isSelected()) {
+				selected = o;
+				break;
+			}
+		}
+		
+		if(selected!=null) {
+			selected.setX(x);
+			selected.setY(y);
+			gm.updateMessage("Moved object");
+		}else {
+			gm.updateMessage("No selected object to move");
+			
+			
+			
+		}
+		gm.setPositionMode(false);
+		repaint();
+		revalidate();
+	}
+
+
+	private void unselectAll() {
+		CustomIterator it = gm.getObjectsIterator();
+		while (it.hasNext()) {
+			it.getNext().setSelected(false);
+		}
+	}
+
+
+	private void selectOnly(GameObject clickedObject) {
+		CustomIterator it = gm.getObjectsIterator();
+		while (it.hasNext()) {
+			GameObject o = it.getNext();
+			o.setSelected(o==clickedObject);
+		}
+		
+	}
 
 }

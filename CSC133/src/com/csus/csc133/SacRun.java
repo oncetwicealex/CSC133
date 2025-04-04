@@ -6,6 +6,7 @@ import com.codename1.ui.layouts.BoxLayout;
 import com.codename1.ui.util.UITimer;
 import com.codename1.ui.*;
 import com.codename1.ui.geom.Dimension;
+import com.csus.csc133.commands.ChangePositionCommand;
 import com.csus.csc133.commands.ChangeStrategyCommand;
 import com.csus.csc133.commands.MovementCommand;
 import com.csus.csc133.commands.PauseCommand;
@@ -130,6 +131,8 @@ public class SacRun extends Form {
 			return new PauseCommand(gm, "Pause");
 		case "Play":
 			return new PauseCommand(gm, "Play");
+		case "Change Position":
+			return new ChangePositionCommand(gm, "Change Position");
 			
 //		case "Lecture Hall":
 //			return new com.csus.csc133.commands.CollisionCommand(gm, "Lecture Hall");
@@ -185,7 +188,7 @@ public class SacRun extends Form {
 //		String[] buttonNames = { "Move", "Stop", "Turn Left", "Turn Right", "Change Strategies", "Lecture Hall",
 //				"Water Dispenser", "Restroom", "Student", "Next Frame" };
 
-		String[] buttonNames = { "Move", "Stop", "Turn Left", "Turn Right", "Change Strategies", "Pause" };
+		String[] buttonNames = { "Move", "Stop", "Turn Left", "Turn Right", "Change Strategies", "Pause", "Change Position" };
 
 		ArrayList<Button> buttons = new ArrayList<>();
 

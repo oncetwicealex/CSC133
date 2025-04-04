@@ -5,11 +5,13 @@ import java.util.Random;
 import com.codename1.charts.util.ColorUtil;
 import com.codename1.ui.Component;
 import com.codename1.ui.Graphics;
+import com.csus.csc133.GameModel;
 import com.csus.csc133.lecture.Lecture;
 import com.csus.csc133.student.Student;
 import com.csus.csc133.student.StudentPlayer;
 
 public class LectureHall extends Facility {
+	private GameModel gm;
 	private String name;
 	private Lecture lecture;
 	private int lectureSize = 90;
@@ -22,8 +24,9 @@ public class LectureHall extends Facility {
 	 * @param name The name of the lecture hall
 	 */
 
-	public LectureHall(String name) {
+	public LectureHall(String name, GameModel gm) {
 		super();
+		this.gm = gm;
 		this.name = name;
 		this.lecture = null;
 
@@ -63,12 +66,10 @@ public class LectureHall extends Facility {
 			StudentPlayer player = (StudentPlayer) s;
 
 			if (lecture != null && lecture.isOngoing()) {
-				System.out.println("Player attended the lecture at " + name);
+				gm.updateMessage("Player attended the lecture at " + name);
 				player.markAttendance();
 				lecture.endLecture();
-			} else {
-				System.out.println("No lecture atm.");
-			}
+			} 
 		}
 
 	}
@@ -95,6 +96,12 @@ public class LectureHall extends Facility {
 
 		g.setColor(ColorUtil.BLACK);
 		g.drawString(name, xPos, yPos + size);
+		
+		if (isSelected()) {
+			g.setColor(ColorUtil.rgb(255, 0, 0));
+			g.drawRect(xPos, yPos, size, size);
+			
+		}
 
 	}
 
