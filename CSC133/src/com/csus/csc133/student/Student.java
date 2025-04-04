@@ -1,6 +1,7 @@
 package com.csus.csc133.student;
 
 import java.util.Random;
+import java.util.Vector;
 
 import com.codename1.charts.util.ColorUtil;
 import com.codename1.ui.Component;
@@ -10,7 +11,7 @@ import com.csus.csc133.GameObject;
 import com.csus.csc133.IMoveable;
 
 public abstract class Student extends GameObject implements IMoveable {
-	private static final double DEFAULT_SPEED = 2;
+	private static final double DEFAULT_SPEED = 3.5;
 	private static final double DEFAULT_TALKATIVELEVEL = 10.0;
 	private static final double DEFAULT_HYDRATION = 150.0;
 	private static final double DEFAULT_WATERINTAKE = 0;
@@ -25,6 +26,8 @@ public abstract class Student extends GameObject implements IMoveable {
 	private double waterIntake;
 	private double sweatingRate;
 	private int absenceTime;
+	
+	private Vector<Student> currentCollisions = new Vector<>();
 
 	public abstract String getTypeName();
 
@@ -132,12 +135,29 @@ public abstract class Student extends GameObject implements IMoveable {
 
 	@Override
 	public void handleCollide(Student s) {
-		if (s != null) {
-			int talkTime = (int) Math.max(this.getTalkativeLevel(), s.getTalkativeLevel());
-			this.setTimeRemain(talkTime);
-			s.setTimeRemain(talkTime);
+		
+		if (s == null) {
+			return;
 		}
-	}
+		
+		if(this.getTimeRemain() > 0 || s.getTimeRemain() > 0) {
+			return;
+		}
+		
+		if (this.currentCollisions.contains(s)) {
+			return;
+		}
+		
+		this.currentCollisions.add(s);
+		s.getCurrentCollisions().add(this);
+		
+		int talkTime = (int) Math.max(this.getTalkativeLevel(), s.getTalkativeLevel());
+		
+		this.setTimeRemain(talkTime);
+		s.setTimeRemain(talkTime);
+		}
+		
+	
 
 	public void drinkWater() {
 		double beforeHydration = this.hydration;
@@ -246,6 +266,10 @@ public abstract class Student extends GameObject implements IMoveable {
 		return super.toString() + ", head: " + Math.round(getHead()) + ", speed: " + getSpeed() + ", hydration: "
 				+ hydration + ", talkative level: " + getTalkativeLevel() + ", time remaining: " + getTimeRemain();
 
+	}
+
+	public Vector<Student> getCurrentCollisions() {
+		return currentCollisions;
 	}
 
 }

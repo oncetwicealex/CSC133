@@ -65,7 +65,7 @@ public abstract class GameObject {
 			x = GameModel.getGAMEWORLD_WIDTH() - halfSize;
 
 		}
-		
+
 		if (y < halfSize) {
 			y = halfSize;
 		} else if (y > GameModel.getGAMEWORLD_HEIGHT() - halfSize) {
@@ -73,23 +73,43 @@ public abstract class GameObject {
 		}
 
 	}
-	public int[] boundingBox(GameObject o) {
-		int left = (int) (o.getX() - (o.getSize() / 2));
-		int right = (int) (o.getX() + (o.getSize() / 2));
-		int top = (int) (o.getY() - (o.getSize() / 2));
-		int bottom = (int) (o.getY() + (o.getSize() / 2));
-		
-		return new int[] {top, right, left, bottom};
+
+	public int[] getBoundingBox() {
+		int left = (int) (getX() - (getSize() / 2));
+		int right = (int) (getX() + (getSize() / 2));
+		int top = (int) (getY() - (getSize() / 2));
+		int bottom = (int) (getY() + (getSize() / 2));
+
+		return new int[] { left, top, right, bottom };
 
 	}
-	
+
 	public boolean overlaps(GameObject o) {
 		int halfThis = this.getSize() / 2;
 		int halfOther = o.getSize() / 2;
-		
+
 		double dx = Math.abs(this.getX() - o.getX());
 		double dy = Math.abs(this.getY() - o.getY());
 		return dx < (halfThis + halfOther) && dy < (halfThis + halfOther);
+
+	}
+
+	public boolean collidesWith(GameObject o) {
+		int[] box1 = this.getBoundingBox(); // box1 = {left1, top1, right1, bottom1 }
+		int[] box2 = o.getBoundingBox(); // box 2 = {left2, top2, right2, bottom2 }
+
+		// check for no left/right overlap first: right1 < left2 or right2 < left1
+		if (box1[2] < box2[0] || box2[2] < box1[0]) {
+			return false;
+		}
+
+		// now check for no top/bottom overlap: bottom1 < top2 or bottom2 < top1
+		if (box1[3] < box2[1] || box2[3] < box1[1]) {
+			return false;
+		}
+
+		// if no separation, the boxes overlap
+		return true;
 
 	}
 

@@ -3,6 +3,8 @@ package com.csus.csc133;
 import java.util.NoSuchElementException;
 import java.util.Vector;
 
+import com.csus.csc133.facilities.LectureHall;
+
 public class GameObjectCollection {
 	private Vector<GameObject> objects;
 
@@ -36,5 +38,10 @@ public class GameObjectCollection {
 				return objects.get(i++);
 			}
 		}
+	}
+
+	public void remove(GameObject o) {
+		objects.remove(o);
+		
 	}
 }

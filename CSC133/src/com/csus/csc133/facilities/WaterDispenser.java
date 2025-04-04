@@ -7,6 +7,7 @@ import com.csus.csc133.student.Student;
 
 public class WaterDispenser extends Facility {
 	private static int waterSize = 40;
+	private String name = "Water Dispenser";
 
 	public WaterDispenser() {
 		setSize(waterSize);
@@ -38,6 +39,10 @@ public class WaterDispenser extends Facility {
 		g.setColor(ColorUtil.BLACK);
 		g.drawString("Water", xPos, yPos + size);
 		
+	}
+
+	public String getName() {
+		return name;
 	}
 
 }

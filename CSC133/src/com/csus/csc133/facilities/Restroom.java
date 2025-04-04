@@ -7,6 +7,8 @@ import com.csus.csc133.student.Student;
 
 public class Restroom extends Facility {
 	private int restroomSize = 90;
+	private String name = "Restroom";
+	
 
 	public Restroom() {
 		super();
@@ -38,6 +40,10 @@ public class Restroom extends Facility {
 		g.setColor(ColorUtil.BLACK);
 		g.drawString("Restroom", xPos, yPos + size);
 		
+	}
+
+	public String getName() {
+		return name;
 	}
 
 }

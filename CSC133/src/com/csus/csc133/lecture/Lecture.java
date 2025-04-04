@@ -11,6 +11,7 @@ public class Lecture {
 	public Lecture() {
 		this.timeRemaining = 0;
 	}
+	
 
 	public boolean isOngoing() {
 		return timeRemaining > 0;

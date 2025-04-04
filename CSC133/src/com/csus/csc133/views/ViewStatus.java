@@ -4,6 +4,7 @@ import com.codename1.ui.Container;
 import com.codename1.ui.Label;
 import com.codename1.ui.layouts.BoxLayout;
 import com.csus.csc133.GameModel;
+import com.csus.csc133.facilities.LectureHall;
 
 import java.util.Observer;
 import java.util.Observable;
@@ -30,8 +31,14 @@ public class ViewStatus extends Container implements Observer {
 	public void update(Observable observable, Object data) {
 		if (observable instanceof GameModel) {
 			GameModel gm = (GameModel) observable;
-			labels[0].setText("Lecture Hall: " + gm.getLectureName());
-
+			LectureHall currentHall = gm.getCurrentLectureHall();
+			
+			if(currentHall != null) {
+			labels[0].setText("Lecture Hall: " + currentHall.getLectureName());
+			} else {
+				labels[0].setText("Lecture Hall: None");
+			}
+			
 			try {
 				double lectureTime = Double.parseDouble(gm.getLectureTimeRemaining());
 				double roundedTime = Math.round(lectureTime * 10.0) / 10.0;

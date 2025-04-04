@@ -46,16 +46,14 @@ public class StudentPlayer extends Student {
 		gm.updateMessage("Player stopped moving.");
 	}
 
-	public void turnLeft() {
+	public void turnRight() {
 		this.setHead((this.getHead() - 5 + 360) % 360);
-		stopMoving();
 		System.out.println("Player turned left to head: " + getHead());
 		gm.updateMessage("Player turned left to head: " + getHead());
 	}
 
-	public void turnRight() {
+	public void turnLeft() {
 		this.setHead((this.getHead() + 5) % 360);
-		stopMoving();
 		System.out.println("Player turned right to head: " + getHead());
 		gm.updateMessage("Player turned right to head: " + getHead());
 	}

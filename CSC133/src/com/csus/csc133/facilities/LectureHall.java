@@ -13,8 +13,7 @@ public class LectureHall extends Facility {
 	private String name;
 	private Lecture lecture;
 	private int lectureSize = 90;
-	private String[] halls = { "Riverside Hall", "Brighton Hall", "Eureka Hall", "Tahoe Hall", "Sequoia Hall",
-			"Yosemite Hall" };
+
 	private Random random = new Random();
 
 	/**
@@ -25,7 +24,7 @@ public class LectureHall extends Facility {
 
 	public LectureHall(String name) {
 		super();
-		this.name = halls[random.nextInt(halls.length)];
+		this.name = name;
 		this.lecture = null;
 
 		setSize(lectureSize);
@@ -45,7 +44,13 @@ public class LectureHall extends Facility {
 	}
 
 	public void setLectureName(String name) {
-		this.name = name;
+		if (name != null) {
+			this.name = name;
+		}
+		else {
+			name = "null";
+		}
+
 	}
 
 	public String getLectureName() {
@@ -79,20 +84,18 @@ public class LectureHall extends Facility {
 	@Override
 	public void draw(Graphics g, Component c) {
 		int size = getSize();
-		int halfSize = size / 2; 
-		
-		//convert center (x,y) to top left coordinates 
-		int xPos = (int)((int) getX() + c.getX() - halfSize);
-		int yPos = (int)((int) getY() + c.getY() - halfSize);
-		
+		int halfSize = size / 2;
+
+		// convert center (x,y) to top left coordinates
+		int xPos = (int) ((int) getX() + c.getX() - halfSize);
+		int yPos = (int) ((int) getY() + c.getY() - halfSize);
+
 		g.setColor(ColorUtil.rgb(50, 66, 168));
 		g.fillRect(xPos, yPos, size, size);
-		
+
 		g.setColor(ColorUtil.BLACK);
 		g.drawString(name, xPos, yPos + size);
-		
-		
-		
+
 	}
 
 }
